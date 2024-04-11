@@ -5,7 +5,7 @@ import 'package:my_app/views/custombutton.dart';
 import 'package:my_app/views/customtextfield.dart';
 import 'package:my_app/views/customtext.dart';
 
-import 'package:my_app/views/login.dart';
+
 class RegistrationScreen extends StatelessWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
 

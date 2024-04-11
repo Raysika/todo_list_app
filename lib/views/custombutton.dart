@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/configs/constants.dart';
 import 'package:my_app/views/customtext.dart';
-import 'package:my_app/views/navigation_bar.dart';
+
 
 class CustomButton extends StatelessWidget {
   final Color labelColor;

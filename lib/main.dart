@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/utils/routes.dart';
-import 'views/welcome_page.dart'; // Assuming you have a WelcomePage
+
 
 void main() {
   runApp(MyApp());

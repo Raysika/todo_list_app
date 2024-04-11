@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/configs/constants.dart';
-import 'package:my_app/views/login.dart';
-import 'package:my_app/views/registration.dart';
+
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);

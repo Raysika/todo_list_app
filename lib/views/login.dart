@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/configs/constants.dart';
-import 'package:my_app/views/registration.dart';
+
 import 'package:my_app/views/custombutton.dart';
 import 'package:my_app/views/customtext.dart';
 import 'package:my_app/views/customtextfield.dart';

@@ -13,8 +13,6 @@ class RegistrationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController firstnameController = TextEditingController();
     TextEditingController lastnameController = TextEditingController();
-    TextEditingController phonenumberController = TextEditingController();
-    TextEditingController usernameController = TextEditingController();
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController repasswordController = TextEditingController();
@@ -68,18 +66,6 @@ class RegistrationScreen extends StatelessWidget {
                 icon: Icons.person_add_alt_1,
                 hint: "Enter your Last Name",
               ),
-              const customtitleText(label: "Username"),
-              customTextField(
-                userFieldController: usernameController,
-                icon: Icons.person_3_rounded,
-                hint: "Enter your username",
-              ),
-              const customtitleText(label: "Phone Number"),
-              customTextField(
-                userFieldController: phonenumberController,
-                icon: Icons.phone,
-                hint: "Enter your Phone Number",
-              ),
               const customtitleText(label: "Email"),
               customTextField(
                 userFieldController: emailController,
@@ -94,7 +80,7 @@ class RegistrationScreen extends StatelessWidget {
                 isPassword: true,
                 hint: "Enter your password",
               ),
-              const customtitleText(label: "Repeat Password"),
+              const customtitleText(label: "Confirm Password"),
               customTextField(
                 userFieldController: repasswordController,
                 icon: Icons.password,

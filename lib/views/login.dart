@@ -11,7 +11,7 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController userNameController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
@@ -64,9 +64,9 @@ class Login extends StatelessWidget {
                   ),
                   const customtitleText(label: "Username"),
                   customTextField(
-                    userFieldController: userNameController,
+                    userFieldController: emailController,
                     icon: Icons.person,
-                    hint: "Username or Email or Phone Number",
+                    hint: "Your E-mail",
                   ),
                   const customtitleText(label: "Password"),
                   customTextField(

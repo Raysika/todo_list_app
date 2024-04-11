@@ -1,5 +1,6 @@
 // welcome_page.dart
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:my_app/configs/constants.dart';
 import 'package:my_app/views/login.dart';
 import 'package:my_app/views/registration.dart';
@@ -44,10 +45,7 @@ class WelcomePage extends StatelessWidget {
             const SizedBox(height: 30.0),
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegistrationScreen()),
-                );
+                Get.toNamed("/registration");
               },
               child: const Text(
                 "Register",
@@ -61,10 +59,7 @@ class WelcomePage extends StatelessWidget {
             const SizedBox(height: 15.0),
             InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Login()),
-                );
+                Get.toNamed("/login");
               },
               child: const Text(
                 "Login",

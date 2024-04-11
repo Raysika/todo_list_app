@@ -1,5 +1,7 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:my_app/utils/routes.dart';
 import 'views/welcome_page.dart'; // Assuming you have a WelcomePage
 
 void main() {
@@ -9,7 +11,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'TaskTrove',
       theme: ThemeData(
         primarySwatch: Colors.orange,
@@ -30,7 +32,9 @@ class MyApp extends StatelessWidget {
           // Add more text styles as needed
         ),
       ),
-      home: WelcomePage(), // Start with the WelcomePage
+      initialRoute: "/",
+      getPages: Routes.routes,
+      
       debugShowCheckedModeBanner: false,
     );
   }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:my_app/configs/constants.dart';
 import 'package:my_app/views/custombutton.dart';
 import 'package:my_app/views/customtextfield.dart';
 import 'package:my_app/views/customtext.dart';
 
 import 'package:my_app/views/login.dart';
-
 class RegistrationScreen extends StatelessWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
 
@@ -106,7 +106,9 @@ class RegistrationScreen extends StatelessWidget {
               CustomButton(
                 labelButton:
                     "Register", // Set the label for the Register button
-                isRegistration: false,
+                action: () {
+                    Get.offAndToNamed("/dashboard");
+                  }
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -121,10 +123,7 @@ class RegistrationScreen extends StatelessWidget {
                       labelColor: orangeColor,
                     ),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Login()),
-                      );
+                      Get.toNamed("/login");
                     },
                   ),
                 ],

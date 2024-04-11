@@ -6,31 +6,19 @@ import 'package:my_app/views/navigation_bar.dart';
 class CustomButton extends StatelessWidget {
   final Color labelColor;
   final String labelButton;
-  final bool isRegistration;
+  final VoidCallback action;
   const CustomButton({
     super.key,
     this.labelColor = appbartextColor,
     required this.labelButton,
-    this.isRegistration = false,
+    required this.action,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        if (isRegistration) {
-          // Handle registration logic
-          print("Registering...");
-        } else {
-          // Handle login logic
-          print("Logging in...");
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    Navigation_Bar()), // Navigate to the Dashboard
-          );
-        }
+       action();
       },
       // ignore: sort_child_properties_last
       child: customtitleText(label: labelButton, labelColor: labelColor),

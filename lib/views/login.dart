@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/configs/constants.dart';
@@ -5,14 +7,21 @@ import 'package:my_app/configs/constants.dart';
 import 'package:my_app/views/custombutton.dart';
 import 'package:my_app/views/customtext.dart';
 import 'package:my_app/views/customtextfield.dart';
+import 'package:http/http.dart' as http;
+
+
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+   Login({super.key});
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+    
 
     return Scaffold(
         appBar: AppBar(
@@ -81,7 +90,7 @@ class Login extends StatelessWidget {
                   CustomButton(
                     labelButton: "Login", // Set the label for the Login button
                     action: (){
-                      Get.offAndToNamed("/dashboard");
+                      loginUser();
                     }
                   ),
                   Row(
@@ -126,4 +135,27 @@ class Login extends StatelessWidget {
           ),
         ));
   }
-}
+  Future<void> loginUser() async {
+    http.Response response;
+    
+    // Prepare the login request URL with sanitized inputs
+    response = await http.get(Uri.parse(
+        'https://acs314flutter.xyz/ray_students/login.php?email=${emailController.text.trim()}&password=${passwordController.text.trim()}'));
+
+    
+      if (response.statusCode == 200) {
+        var serverResponse = json.decode(response.body);
+        int loginStatus = serverResponse['success'];
+        if (loginStatus == 1){
+          //navigate to dashboard
+          Get.offAndToNamed('/dashboard');
+        } else {
+          print("Phone number or password is invalid");
+        }
+      } else {
+        print ("Server Error ${response.statusCode}");
+      }
+  }
+  }
+
+

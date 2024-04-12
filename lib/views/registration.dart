@@ -1,9 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:my_app/configs/constants.dart';
 import 'package:my_app/views/custombutton.dart';
 import 'package:my_app/views/customtextfield.dart';
 import 'package:my_app/views/customtext.dart';
+
+TextEditingController firstnameController = TextEditingController();
+TextEditingController lastnameController = TextEditingController();
+TextEditingController emailController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
+TextEditingController repasswordController = TextEditingController();
+
 
 
 class RegistrationScreen extends StatelessWidget {
@@ -11,12 +21,7 @@ class RegistrationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController firstnameController = TextEditingController();
-    TextEditingController lastnameController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController repasswordController = TextEditingController();
-
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -93,7 +98,7 @@ class RegistrationScreen extends StatelessWidget {
                 labelButton:
                     "Register", // Set the label for the Register button
                 action: () {
-                    Get.offAndToNamed("/dashboard");
+                    signupUser();
                   }
               ),
               Row(
@@ -120,4 +125,25 @@ class RegistrationScreen extends StatelessWidget {
       ),
     );
   }
+  Future<void> signupUser() async {
+    http.Response response;
+    var body = {
+  'first_name': firstnameController.text.trim(),
+  'last_name': lastnameController.text.trim(),
+  'email': emailController.text.trim(),
+  'password': passwordController.text.trim()
+};
+
+    response = await http.post(Uri.parse(
+        'https://acs314flutter.xyz/ray_students/signup.php'), body: body);
+
+    if (response.statusCode == 200) {
+      var serverResponse = json.decode(response.body);
+      int signupStatus = serverResponse['success'];
+      if (signupStatus == 1) {
+        //navigate to login
+        Get.offAndToNamed('/login');
+      } 
+  }
+}
 }

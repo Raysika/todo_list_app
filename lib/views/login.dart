@@ -9,16 +9,11 @@ import 'package:my_app/views/customtext.dart';
 import 'package:my_app/views/customtextfield.dart';
 import 'package:http/http.dart' as http;
 
-
+TextEditingController emailController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
 
 class Login extends StatelessWidget {
-   Login({super.key});
-
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  
-
+   const Login({super.key});
   @override
   Widget build(BuildContext context) {
     
@@ -148,7 +143,7 @@ class Login extends StatelessWidget {
         int loginStatus = serverResponse['success'];
         if (loginStatus == 1){
           //navigate to dashboard
-          Get.offAndToNamed('/dashboard');
+          Get.toNamed('/dashboard');
         } else {
           print("Phone number or password is invalid");
         }

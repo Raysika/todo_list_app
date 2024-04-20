@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:my_app/configs/constants.dart';
+import 'package:my_app/controllers/logincontroller.dart';
+import 'package:my_app/views/login.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -9,17 +15,15 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  // Sample data for tasks
-  List<Map<String, dynamic>> tasks = [
-    {"title": "Task 1", "completed": false},
-    {"title": "Task 2", "completed": false},
-    {"title": "Task 3", "completed": false},
-  ];
+  // List to hold tasks
+  List<Map<String, dynamic>> tasks = [];
+
   Future<void> _showTaskInputDialog(BuildContext context) async {
     final TextEditingController taskNameController = TextEditingController();
     final TextEditingController taskDescriptionController =
         TextEditingController();
     DateTime? selectedDate;
+    LoginController loginController = Get.put(LoginController());
 
     return showDialog<void>(
       context: context,
@@ -66,7 +70,19 @@ class _DashboardState extends State<Dashboard> {
             TextButton(
               child: Text('Add'),
               onPressed: () {
-                // Add task logic here
+                setState(() {
+                  tasks.add({
+                    "title": taskNameController.text,
+                    "description": taskDescriptionController.text,
+                    "due_date": selectedDate?.toString() ?? "",
+                    "completed": false
+                  });
+                });
+                // Call postTask here with the necessary parameters
+                postTask(
+                    taskNameController.text,
+                    taskDescriptionController.text,
+                    selectedDate?.toString() ?? "");
                 Navigator.of(context).pop();
               },
             ),
@@ -118,6 +134,17 @@ class _DashboardState extends State<Dashboard> {
                               : null,
                         ),
                       ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (tasks[index]['description'] != null &&
+                              tasks[index]['description']!.isNotEmpty)
+                            Text(tasks[index]['description']!),
+                          if (tasks[index]['date'] != null &&
+                              tasks[index]['date']!.isNotEmpty)
+                            Text("Due: ${tasks[index]['date']}"),
+                        ],
+                      ),
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () {
@@ -141,4 +168,30 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
+  Future<void> postTask(
+      String title, String description, String due_date) async {
+        http.Response response;
+        var body = {
+        'title': title,
+        'description': description,
+        'due_date': due_date,
+        'user_id': loginController.email.value,
+      };
+        response = await http.post(
+      Uri.parse('https://acs314flutter.xyz/ray_students/create_tasks.php'),
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: body);
+
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response,
+      // then parse the JSON.
+      var serverResponse = json.decode(response.body);
+      int postStatus = serverResponse['success'];
+      if (postStatus == 1){
+        print('task posted');
+      } else {
+        print('task not posted');
+      }
+    }
+  }  
 }

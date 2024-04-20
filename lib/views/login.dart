@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/configs/constants.dart';
+import 'package:my_app/controllers/logincontroller.dart';
 
 import 'package:my_app/views/custombutton.dart';
 import 'package:my_app/views/customtext.dart';
@@ -11,7 +12,7 @@ import 'package:http/http.dart' as http;
 
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
-
+LoginController loginController = Get.put(LoginController());
 class Login extends StatelessWidget {
    const Login({super.key});
   @override
@@ -143,6 +144,9 @@ class Login extends StatelessWidget {
         int loginStatus = serverResponse['success'];
         if (loginStatus == 1){
           //navigate to dashboard
+          var userData = serverResponse['userdata'];
+          var email = userData[0]['email'];
+          loginController.updateEmail(email);
           Get.toNamed('/dashboard');
         } else {
           print("Phone number or password is invalid");

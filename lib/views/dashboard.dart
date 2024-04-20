@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:get/get.dart';
+
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:my_app/configs/constants.dart';
-import 'package:my_app/controllers/logincontroller.dart';
+
 import 'package:my_app/views/login.dart';
 
 class Dashboard extends StatefulWidget {
@@ -23,7 +23,7 @@ class _DashboardState extends State<Dashboard> {
     final TextEditingController taskDescriptionController =
         TextEditingController();
     DateTime? selectedDate;
-    LoginController loginController = Get.put(LoginController());
+    
 
     return showDialog<void>(
       context: context,

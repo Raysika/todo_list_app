@@ -1,11 +1,16 @@
 import 'dart:convert';
 
+
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:my_app/configs/constants.dart';
+import 'package:my_app/controllers/logincontroller.dart';
+
 
 import 'package:my_app/views/login.dart';
+
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -17,6 +22,53 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   // List to hold tasks
   List<Map<String, dynamic>> tasks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTasks();
+  }
+Future<void> fetchTasks() async {
+    LoginController loginController = Get.put(LoginController());
+    String userid =
+        loginController.email.value; // Assuming this holds the user's user_id
+
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'https://acs314flutter.xyz/ray_students/fetch_tasks.php?user_id=$userid'),
+      );
+
+      if (response.statusCode == 200) {
+        var serverResponse = json.decode(response.body);
+        if (serverResponse['success'] == 1) {
+          // Explicitly cast the list of dynamic objects to a list of maps
+          List<Map<String, dynamic>> tasksList =
+              List<Map<String, dynamic>>.from(serverResponse['tasks']);
+
+          // Modify the tasksList to ensure 'completed' is always a boolean
+          tasksList = tasksList
+              .map((task) => {
+                    ...task,
+                    'completed': task['completed'] ??
+                        false, // Ensure completed is always a boolean
+                  })
+              .toList();
+
+          setState(() {
+            tasks = tasksList;
+          });
+        } else {
+          print('Error fetching tasks: ${serverResponse['message']}');
+        }
+      } else {
+        print('Failed to load tasks: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching tasks: $e');
+    }
+  }
+
 
   Future<void> _showTaskInputDialog(BuildContext context) async {
     final TextEditingController taskNameController = TextEditingController();
@@ -94,6 +146,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -119,7 +172,7 @@ class _DashboardState extends State<Dashboard> {
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: ListTile(
                       leading: Checkbox(
-                        value: tasks[index]['completed'],
+                        value: tasks[index]['completed'] ?? false,
                         onChanged: (bool? value) {
                           setState(() {
                             tasks[index]['completed'] = value!;
@@ -194,4 +247,6 @@ class _DashboardState extends State<Dashboard> {
       }
     }
   }  
+  
+
 }

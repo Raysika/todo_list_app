@@ -19,7 +19,7 @@ class Navigation_Bar extends StatelessWidget {
           bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.dashboard), text: 'Dashboard'),
-              Tab(icon: Icon(Icons.timeline), text: 'Pomodoro'),
+              Tab(icon: Icon(Icons.timer), text: 'Pomodoro'),
               Tab(icon: Icon(Icons.settings), text: 'Settings'),
             ],
           ),

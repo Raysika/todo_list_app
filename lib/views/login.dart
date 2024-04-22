@@ -145,8 +145,10 @@ class Login extends StatelessWidget {
         if (loginStatus == 1){
           //navigate to dashboard
           var userData = serverResponse['userdata'];
-          print (userData);
-          print(userData[0]['first_name']);
+
+          //debugging
+          // print (userData);
+          // print(userData[0]['first_name']);
           var email = userData[0]['email'];
           var firstName = userData[0]['first_name'];
           loginController.updateEmail(email);

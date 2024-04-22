@@ -145,8 +145,12 @@ class Login extends StatelessWidget {
         if (loginStatus == 1){
           //navigate to dashboard
           var userData = serverResponse['userdata'];
+          print (userData);
+          print(userData[0]['first_name']);
           var email = userData[0]['email'];
+          var firstName = userData[0]['first_name'];
           loginController.updateEmail(email);
+          loginController.updateFirstName(firstName);
           Get.toNamed('/dashboard');
         } else {
           print("Phone number or password is invalid");

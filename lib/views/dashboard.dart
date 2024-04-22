@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:my_app/configs/constants.dart';
 import 'package:my_app/controllers/logincontroller.dart';
 
-import 'package:my_app/views/login.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -19,6 +18,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   // List to hold tasks
   List<Map<String, dynamic>> tasks = [];
+  LoginController loginController = Get.put(LoginController());
 
   @override
   void initState() {
@@ -150,7 +150,7 @@ class _DashboardState extends State<Dashboard> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                "Hello Raymond, your tasks for today are:",
+                "Hello ${Get.find<LoginController>().firstName.value}, your tasks for today are:",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
@@ -209,7 +209,9 @@ class _DashboardState extends State<Dashboard> {
                         icon: Icon(Icons.delete),
                         onPressed: () {
                           setState(() {
-                            tasks.removeAt(index);
+                            String taskId = tasks[index]
+                                ['id']; // Assuming each task has an 'id' field
+                            deleteTask(taskId);
                           });
                         },
                       ),
@@ -229,6 +231,7 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 void updateStatus(taskid,val) async {
+    // ignore: unused_local_variable
     http.Response response;
     response = await http.get(Uri.parse(
         'https://acs314flutter.xyz/ray_students/updatestatus.php?taskid=$taskid&val=$val'));
@@ -264,4 +267,23 @@ void updateStatus(taskid,val) async {
       }
     }
   }
+  Future<void> deleteTask(String taskId) async {
+    http.Response response;
+    response = await http.get(Uri.parse(
+        'https://acs314flutter.xyz/ray_students/deletetasks.php?taskid=$taskId'));
+
+    // Check if the task was successfully deleted
+    if (response.statusCode == 200) {
+      var serverResponse = json.decode(response.body);
+      if (serverResponse['success'] == 1) {
+        print('Task deleted successfully');
+        fetchTasks(); // Refresh the tasks list
+      } else {
+        print('Failed to delete task: ${serverResponse['message']}');
+      }
+    } else {
+      print('Failed to delete task: ${response.statusCode}');
+    }
+  }
+
 }

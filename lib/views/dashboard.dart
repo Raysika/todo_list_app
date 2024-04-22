@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,9 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/configs/constants.dart';
 import 'package:my_app/controllers/logincontroller.dart';
 
-
 import 'package:my_app/views/login.dart';
-
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -28,10 +25,10 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     fetchTasks();
   }
-Future<void> fetchTasks() async {
+
+  Future<void> fetchTasks() async {
     LoginController loginController = Get.put(LoginController());
-    String userid =
-        loginController.email.value; // Assuming this holds the user's user_id
+    String userid = loginController.email.value;
 
     try {
       final response = await http.get(
@@ -51,7 +48,7 @@ Future<void> fetchTasks() async {
               .map((task) => {
                     ...task,
                     'completed': task['completed'] ??
-                        false, // Ensure completed is always a boolean
+                        '0', // Ensure completed is always a boolean
                   })
               .toList();
 
@@ -69,13 +66,11 @@ Future<void> fetchTasks() async {
     }
   }
 
-
   Future<void> _showTaskInputDialog(BuildContext context) async {
     final TextEditingController taskNameController = TextEditingController();
     final TextEditingController taskDescriptionController =
         TextEditingController();
     DateTime? selectedDate;
-    
 
     return showDialog<void>(
       context: context,
@@ -146,7 +141,6 @@ Future<void> fetchTasks() async {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -172,17 +166,30 @@ Future<void> fetchTasks() async {
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: ListTile(
                       leading: Checkbox(
-                        value: tasks[index]['completed'] ?? false,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            tasks[index]['completed'] = value!;
-                          });
+                        value: tasks[index]['completed'].toString().compareTo("1") == 0
+                            ? true
+                            : false,
+                        onChanged: (bool? value)  {
+                          setState(()  { 
+                            String val=value! ? "1" : "0";  
+                            String taskid = tasks[index]['id'];
+
+                            //debugging
+                            //print(taskid);
+                            updateStatus(taskid,val);
+    
+    // Prepare the login request URL with sanitized inputs
+    });
+                         
                         },
                       ),
                       title: Text(
                         tasks[index]['title'],
                         style: TextStyle(
                           decoration: tasks[index]['completed']
+                                      .toString()
+                                      .compareTo("1") ==
+                                  0
                               ? TextDecoration.lineThrough
                               : null,
                         ),
@@ -221,17 +228,27 @@ Future<void> fetchTasks() async {
       ),
     );
   }
+void updateStatus(taskid,val) async {
+    http.Response response;
+    response = await http.get(Uri.parse(
+        'https://acs314flutter.xyz/ray_students/updatestatus.php?taskid=$taskid&val=$val'));
+
+        //debugging
+        // print(response.body);
+        // print(response.statusCode);
+    fetchTasks();
+  }
   Future<void> postTask(
       String title, String description, String due_date) async {
-        http.Response response;
-        var body = {
-        'title': title,
-        'description': description,
-        'due_date': due_date,
-        'user_id': loginController.email.value,
-      };
-        response = await http.post(
-      Uri.parse('https://acs314flutter.xyz/ray_students/create_tasks.php'),
+    http.Response response;
+    var body = {
+      'title': title,
+      'description': description,
+      'due_date': due_date,
+      'user_id': loginController.email.value,
+    };
+    response = await http.post(
+        Uri.parse('https://acs314flutter.xyz/ray_students/create_tasks.php'),
         headers: {"Content-Type": "application/x-www-form-urlencoded"},
         body: body);
 
@@ -240,13 +257,11 @@ Future<void> fetchTasks() async {
       // then parse the JSON.
       var serverResponse = json.decode(response.body);
       int postStatus = serverResponse['success'];
-      if (postStatus == 1){
+      if (postStatus == 1) {
         print('task posted');
       } else {
         print('task not posted');
       }
     }
-  }  
-  
-
+  }
 }

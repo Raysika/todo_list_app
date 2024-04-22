@@ -262,8 +262,22 @@ void updateStatus(taskid,val) async {
       int postStatus = serverResponse['success'];
       if (postStatus == 1) {
         print('task posted');
+        // Show a SnackBar to inform the user that the task has been created
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Task created successfully!'),
+            duration: Duration(seconds: 3),
+          ),
+        );
       } else {
         print('task not posted');
+        // Optionally, show a SnackBar for failure
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to create task.'),
+            duration: Duration(seconds: 3),
+          ),
+        );
       }
     }
   }

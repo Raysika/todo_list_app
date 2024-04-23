@@ -200,9 +200,9 @@ class _DashboardState extends State<Dashboard> {
                           if (tasks[index]['description'] != null &&
                               tasks[index]['description']!.isNotEmpty)
                             Text(tasks[index]['description']!),
-                          if (tasks[index]['date'] != null &&
-                              tasks[index]['date']!.isNotEmpty)
-                            Text("Due: ${tasks[index]['date']}"),
+                          if (tasks[index]['due_date'] != null &&
+                              tasks[index]['due_date']!.isNotEmpty)
+                            Text("Due: ${tasks[index]['due_date']}"),
                         ],
                       ),
                       trailing: IconButton(

@@ -7,7 +7,7 @@ class PomodoroTimerPage extends StatefulWidget {
 }
 
 class _PomodoroTimerPageState extends State<PomodoroTimerPage> {
-  int _start = 25 * 60; // 25 minutes in seconds
+  int _start = 25 * 60; 
   int _current = 0;
   bool _isActive = false;
   Timer? _timer;

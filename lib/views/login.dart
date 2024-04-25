@@ -33,14 +33,6 @@ class Login extends StatelessWidget {
           automaticallyImplyLeading: false,
         ),
         body: Container(
-          //decoration: BoxDecoration(
-          //image: DecorationImage(
-          //image: AssetImage(
-          //"assets/images/background.jpg"), // Add your background image)
-          //fit: BoxFit.cover,
-          //),
-          //),
-
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(50, 30, 50, 30),
@@ -85,7 +77,7 @@ class Login extends StatelessWidget {
                     height: 20,
                   ),
                   CustomButton(
-                    labelButton: "Login", // Set the label for the Login button
+                    labelButton: "Login", 
                     action: (){
                       loginUser(context);
                     }
@@ -135,7 +127,6 @@ class Login extends StatelessWidget {
   Future<void> loginUser(BuildContext context) async {
     http.Response response;
     
-    // Prepare the login request URL with sanitized inputs
     response = await http.get(Uri.parse(
         'https://acs314flutter.xyz/ray_students/login.php?email=${emailController.text.trim()}&password=${passwordController.text.trim()}'));
 
@@ -144,7 +135,6 @@ class Login extends StatelessWidget {
         var serverResponse = json.decode(response.body);
         int loginStatus = serverResponse['success'];
         if (loginStatus == 1){
-          //navigate to dashboard
           var userData = serverResponse['userdata'];
 
           //debugging
@@ -158,7 +148,7 @@ class Login extends StatelessWidget {
           loginController.updateLastName(lastName);
           Get.toNamed('/dashboard');
         } else {
-          // Show Snackbar for incorrect login
+          
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Incorrect login details"),

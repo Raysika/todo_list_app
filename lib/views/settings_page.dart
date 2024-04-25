@@ -24,7 +24,6 @@ class SettingsPage extends StatelessWidget {
                 leading: Icon(Icons.person),
                 title: Text('Account'),
                 onPressed: (BuildContext context) {
-                  // Navigate to account settings or open a dialog
                    showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -90,7 +89,6 @@ class SettingsPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigate back to the login screen
           Get.offAndToNamed('/login');
         },
         child: Icon(Icons.logout),

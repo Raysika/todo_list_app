@@ -158,14 +158,12 @@ class RegistrationScreen extends StatelessWidget {
       var serverResponse = json.decode(response.body);
       int signupStatus = serverResponse['success'];
       if (signupStatus == 1) {
-        // Navigate to login
+        
         Get.offAndToNamed('/login');
       } else {
-        // Handle signup failure
         Get.snackbar('Error', 'Registration failed. Please try again.');
       }
     } else {
-      // Handle HTTP request failure
       Get.snackbar('Error',
           'Failed to register. Please check your internet connection.');
     }

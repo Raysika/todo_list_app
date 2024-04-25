@@ -39,16 +39,15 @@ class _DashboardState extends State<Dashboard> {
       if (response.statusCode == 200) {
         var serverResponse = json.decode(response.body);
         if (serverResponse['success'] == 1) {
-          // Explicitly cast the list of dynamic objects to a list of maps
           List<Map<String, dynamic>> tasksList =
               List<Map<String, dynamic>>.from(serverResponse['tasks']);
 
-          // Modify the tasksList to ensure 'completed' is always a boolean
+          
           tasksList = tasksList
               .map((task) => {
                     ...task,
                     'completed': task['completed'] ??
-                        '0', // Ensure completed is always a boolean
+                        '0', 
                   })
               .toList();
 
@@ -125,7 +124,6 @@ class _DashboardState extends State<Dashboard> {
                     "completed": false
                   });
                 });
-                // Call postTask here with the necessary parameters
                 postTask(
                     taskNameController.text,
                     taskDescriptionController.text,
@@ -178,7 +176,6 @@ class _DashboardState extends State<Dashboard> {
                             //print(taskid);
                             updateStatus(taskid,val);
 
-                            // Show a Snackbar to inform the user that the task has been marked as completed
                String snackbarMessage = value
                                 ? 'Task completed'
                                 : 'Task uncompleted';
@@ -221,7 +218,7 @@ class _DashboardState extends State<Dashboard> {
                         onPressed: () {
                           setState(() {
                             String taskId = tasks[index]
-                                ['id']; // Assuming each task has an 'id' field
+                                ['id']; 
                             deleteTask(taskId);
                           });
                         },
@@ -267,13 +264,11 @@ void updateStatus(taskid,val) async {
         body: body);
 
     if (response.statusCode == 200) {
-      // If the server returns a 200 OK response,
-      // then parse the JSON.
       var serverResponse = json.decode(response.body);
       int postStatus = serverResponse['success'];
       if (postStatus == 1) {
         print('task posted');
-        // Show a SnackBar to inform the user that the task has been created
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Task created successfully!'),
@@ -282,7 +277,7 @@ void updateStatus(taskid,val) async {
         );
       } else {
         print('task not posted');
-        // Optionally, show a SnackBar for failure
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to create task.'),

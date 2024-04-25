@@ -16,7 +16,6 @@ class customtitleText extends StatelessWidget {
     return Text(
       label,
       style: TextStyle(
-          fontFamily: '', // Add Your Custom Font
           color: labelColor,
           fontSize: fontSize,
           fontWeight: FontWeight.bold),

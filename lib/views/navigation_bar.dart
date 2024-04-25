@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/configs/constants.dart';
 import 'package:my_app/views/pomodoro_timer_page.dart';
 import 'dashboard.dart';
-import 'settings_page.dart'; // Import the settings page
+import 'settings_page.dart'; 
 
 class Navigation_Bar extends StatelessWidget {
   const Navigation_Bar({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class Navigation_Bar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3, // Number of tabs
+      length: 3, 
       child: Scaffold(
         appBar: AppBar(
           title: const Text("TaskTrove"),
@@ -27,9 +27,9 @@ class Navigation_Bar extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Dashboard(), // Dashboard tab
-            PomodoroTimerPage(), // Pomodoro tab
-            SettingsPage(), // Settings tab
+            Dashboard(), 
+            PomodoroTimerPage(), 
+            SettingsPage(), 
           ],
         ),
       ),

@@ -23,6 +23,7 @@ class Navigation_Bar extends StatelessWidget {
               Tab(icon: Icon(Icons.settings), text: 'Settings'),
             ],
           ),
+          automaticallyImplyLeading: false,
         ),
         body: TabBarView(
           children: [

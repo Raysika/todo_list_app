@@ -32,7 +32,7 @@ class RegistrationScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: orangeColor,
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Padding(

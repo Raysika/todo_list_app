@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/configs/constants.dart';
@@ -29,7 +30,7 @@ class Login extends StatelessWidget {
             ),
           ),
           backgroundColor: orangeColor,
-          automaticallyImplyLeading: true,
+          automaticallyImplyLeading: false,
         ),
         body: Container(
           //decoration: BoxDecoration(
@@ -86,7 +87,7 @@ class Login extends StatelessWidget {
                   CustomButton(
                     labelButton: "Login", // Set the label for the Login button
                     action: (){
-                      loginUser();
+                      loginUser(context);
                     }
                   ),
                   Row(
@@ -131,7 +132,7 @@ class Login extends StatelessWidget {
           ),
         ));
   }
-  Future<void> loginUser() async {
+  Future<void> loginUser(BuildContext context) async {
     http.Response response;
     
     // Prepare the login request URL with sanitized inputs
@@ -147,15 +148,23 @@ class Login extends StatelessWidget {
           var userData = serverResponse['userdata'];
 
           //debugging
-          // print (userData);
-          // print(userData[0]['first_name']);
+          //print (userData);
+          //print(userData[0]['last_name']);
           var email = userData[0]['email'];
           var firstName = userData[0]['first_name'];
+          var lastName = userData[0]['last_name'];
           loginController.updateEmail(email);
           loginController.updateFirstName(firstName);
+          loginController.updateLastName(lastName);
           Get.toNamed('/dashboard');
         } else {
-          print("Phone number or password is invalid");
+          // Show Snackbar for incorrect login
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Incorrect login details"),
+            duration: Duration(seconds: 3),
+          ),
+        );
         }
       } else {
         print ("Server Error ${response.statusCode}");

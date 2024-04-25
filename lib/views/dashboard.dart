@@ -177,8 +177,19 @@ class _DashboardState extends State<Dashboard> {
                             //debugging
                             //print(taskid);
                             updateStatus(taskid,val);
+
+                            // Show a Snackbar to inform the user that the task has been marked as completed
+               String snackbarMessage = value
+                                ? 'Task completed'
+                                : 'Task uncompleted';
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(snackbarMessage),
+                                duration: Duration(seconds: 3),
+                              ),
+                            );
     
-    // Prepare the login request URL with sanitized inputs
+    
     });
                          
                         },
@@ -290,8 +301,15 @@ void updateStatus(taskid,val) async {
     if (response.statusCode == 200) {
       var serverResponse = json.decode(response.body);
       if (serverResponse['success'] == 1) {
-        print('Task deleted successfully');
+        print('Task deleted');
         fetchTasks(); // Refresh the tasks list
+          // Show a Snackbar to inform the user that the task has been deleted
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Task deleted successfully.'),
+            duration: Duration(seconds: 3),
+          ),
+        );
       } else {
         print('Failed to delete task: ${serverResponse['message']}');
       }

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:my_app/configs/constants.dart';
 import 'package:my_app/controllers/logincontroller.dart';
 
-
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
 
@@ -42,12 +41,10 @@ class _DashboardState extends State<Dashboard> {
           List<Map<String, dynamic>> tasksList =
               List<Map<String, dynamic>>.from(serverResponse['tasks']);
 
-          
           tasksList = tasksList
               .map((task) => {
                     ...task,
-                    'completed': task['completed'] ??
-                        '0', 
+                    'completed': task['completed'] ?? '0',
                   })
               .toList();
 
@@ -164,31 +161,30 @@ class _DashboardState extends State<Dashboard> {
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: ListTile(
                       leading: Checkbox(
-                        value: tasks[index]['completed'].toString().compareTo("1") == 0
+                        value: tasks[index]['completed']
+                                    .toString()
+                                    .compareTo("1") ==
+                                0
                             ? true
                             : false,
-                        onChanged: (bool? value)  {
-                          setState(()  { 
-                            String val=value! ? "1" : "0";  
+                        onChanged: (bool? value) {
+                          setState(() {
+                            String val = value! ? "1" : "0";
                             String taskid = tasks[index]['id'];
 
                             //debugging
                             //print(taskid);
-                            updateStatus(taskid,val);
+                            updateStatus(taskid, val);
 
-               String snackbarMessage = value
-                                ? 'Task completed'
-                                : 'Task uncompleted';
+                            String snackbarMessage =
+                                value ? 'Task completed' : 'Task uncompleted';
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(snackbarMessage),
                                 duration: Duration(seconds: 3),
                               ),
                             );
-    
-    
-    });
-                         
+                          });
                         },
                       ),
                       title: Text(
@@ -209,7 +205,8 @@ class _DashboardState extends State<Dashboard> {
                               tasks[index]['description']!.isNotEmpty)
                             Text(tasks[index]['description']!),
                           if (tasks[index]['due_date'] != null &&
-                              tasks[index]['due_date']!.isNotEmpty)
+                              tasks[index]['due_date']!.isNotEmpty &&
+                              tasks[index]['due_date'] != '0000-00-00')
                             Text("Due: ${tasks[index]['due_date']}"),
                         ],
                       ),
@@ -217,8 +214,7 @@ class _DashboardState extends State<Dashboard> {
                         icon: Icon(Icons.delete),
                         onPressed: () {
                           setState(() {
-                            String taskId = tasks[index]
-                                ['id']; 
+                            String taskId = tasks[index]['id'];
                             deleteTask(taskId);
                           });
                         },
@@ -238,17 +234,19 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
-void updateStatus(taskid,val) async {
+
+  void updateStatus(taskid, val) async {
     // ignore: unused_local_variable
     http.Response response;
     response = await http.get(Uri.parse(
         'https://acs314flutter.xyz/ray_students/updatestatus.php?taskid=$taskid&val=$val'));
 
-        //debugging
-        // print(response.body);
-        // print(response.statusCode);
+    //debugging
+    // print(response.body);
+    // print(response.statusCode);
     fetchTasks();
   }
+
   Future<void> postTask(
       String title, String description, String due_date) async {
     http.Response response;
@@ -287,6 +285,7 @@ void updateStatus(taskid,val) async {
       }
     }
   }
+
   Future<void> deleteTask(String taskId) async {
     http.Response response;
     response = await http.get(Uri.parse(
@@ -296,7 +295,7 @@ void updateStatus(taskid,val) async {
       var serverResponse = json.decode(response.body);
       if (serverResponse['success'] == 1) {
         print('Task deleted');
-        fetchTasks(); 
+        fetchTasks();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Task deleted successfully.'),
@@ -310,5 +309,4 @@ void updateStatus(taskid,val) async {
       print('Failed to delete task: ${response.statusCode}');
     }
   }
-
 }

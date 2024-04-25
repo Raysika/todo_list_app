@@ -126,24 +126,49 @@ class RegistrationScreen extends StatelessWidget {
     );
   }
   Future<void> signupUser() async {
+    // Validate input fields
+    if (firstnameController.text.trim().isEmpty ||
+        lastnameController.text.trim().isEmpty ||
+        emailController.text.trim().isEmpty ||
+        passwordController.text.trim().isEmpty ||
+        repasswordController.text.trim().isEmpty) {
+      Get.snackbar('Error', 'Please fill in all the fields.');
+      return;
+    }
+
+    // Check if passwords match
+    if (passwordController.text.trim() != repasswordController.text.trim()) {
+      Get.snackbar('Error', 'Passwords do not match.');
+      return;
+    }
+
     http.Response response;
     var body = {
-  'first_name': firstnameController.text.trim(),
-  'last_name': lastnameController.text.trim(),
-  'email': emailController.text.trim(),
-  'password': passwordController.text.trim()
-};
+      'first_name': firstnameController.text.trim(),
+      'last_name': lastnameController.text.trim(),
+      'email': emailController.text.trim(),
+      'password': passwordController.text.trim(),
+    };
 
-    response = await http.post(Uri.parse(
-        'https://acs314flutter.xyz/ray_students/signup.php'), body: body);
+    response = await http.post(
+        Uri.parse('https://acs314flutter.xyz/ray_students/signup.php'),
+        body: body);
 
     if (response.statusCode == 200) {
       var serverResponse = json.decode(response.body);
       int signupStatus = serverResponse['success'];
       if (signupStatus == 1) {
-        //navigate to login
+        // Navigate to login
         Get.offAndToNamed('/login');
-      } 
+      } else {
+        // Handle signup failure
+        Get.snackbar('Error', 'Registration failed. Please try again.');
+      }
+    } else {
+      // Handle HTTP request failure
+      Get.snackbar('Error',
+          'Failed to register. Please check your internet connection.');
+    }
   }
-}
+
 }

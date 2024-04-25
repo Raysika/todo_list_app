@@ -292,13 +292,11 @@ void updateStatus(taskid,val) async {
     response = await http.get(Uri.parse(
         'https://acs314flutter.xyz/ray_students/deletetasks.php?taskid=$taskId'));
 
-    // Check if the task was successfully deleted
     if (response.statusCode == 200) {
       var serverResponse = json.decode(response.body);
       if (serverResponse['success'] == 1) {
         print('Task deleted');
-        fetchTasks(); // Refresh the tasks list
-          // Show a Snackbar to inform the user that the task has been deleted
+        fetchTasks(); 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Task deleted successfully.'),

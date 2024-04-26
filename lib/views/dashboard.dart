@@ -176,8 +176,9 @@ class _DashboardState extends State<Dashboard> {
                             //print(taskid);
                             updateStatus(taskid, val);
 
-                            String snackbarMessage =
-                                value ? 'Task completed' : 'Task uncompleted';
+                            String snackbarMessage = value
+                                ? 'Task completed'
+                                : 'Task marked as incomplete';
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(snackbarMessage),
